@@ -7,20 +7,26 @@
  const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jolmh.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
    
  const app = express()
- const port = 5000
-
  app.use(bodyParser.json());
  app.use(cors());
-          
-  const client = new MongoClient(uri, { useNewUrlParser: true,useUnifiedTopology: true });
-       client.connect(err => {
-          const products = client.db("emaJhonStore").collection("products");
+
+ const port = 5000
+
+ 
+      
+
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  
+client.connect(err => {
+   const productsCollection = client.db("emaJhonStore").collection("products");
        
-          app.post('/AddProducts',(req,res) => {
-            const product=req.body;
-            products.insertOne(product)
+          app.post('/addProduct', (req,res) => {
+            const products=req.body;
+            console.log(products);
+            productsCollection.insertMany(products)
             .then(result => {
-              console.log(result);
+              console.log(result.insertedCount);
+              res.send(result.insertedCount);
             })
           })
           });
