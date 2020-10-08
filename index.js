@@ -31,7 +31,7 @@ client.connect(err => {
             })
       })
           app.get('/products',(req,res) => {
-            productsCollection.find({})
+            productsCollection.find({name:{$regex: 'TV'}})
             .toArray((err,documents) =>{
               res.send(documents);
             })
