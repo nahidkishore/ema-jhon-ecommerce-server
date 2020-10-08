@@ -19,6 +19,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
   
 client.connect(err => {
    const productsCollection = client.db("emaJhonEcommerce").collection("products");
+   const ordersCollection = client.db("emaJhonEcommerce").collection("orders");
        
           app.post('/addProducts', (req,res) => {
             const products=req.body;
@@ -52,7 +53,15 @@ client.connect(err => {
    })
 
 
-
+   app.post('/addOrder', (req,res) => {
+    const order=req.body;
+    console.log(order);
+    ordersCollection.insertOne(order)
+    .then(result => {
+      console.log(result.insertedCount);
+      res.send(result.insertedCount >0)
+    })
+})
           });
 
 
